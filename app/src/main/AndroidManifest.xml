@@ -14,8 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Main4Activity"></activity>
-        <activity android:name=".Main2Activity" />
+        <activity android:name=".Step3Activity"></activity>
+        <activity android:name=".Main4Activity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Step2Activity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,14 +31,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Main3Activity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".Step1Activity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

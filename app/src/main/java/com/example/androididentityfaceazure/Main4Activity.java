@@ -25,7 +25,7 @@ public class Main4Activity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 String username = editText_username.getText().toString();
-                Intent intent = new Intent(getApplicationContext(), Main3Activity.class);
+                Intent intent = new Intent(getApplicationContext(), Step1Activity.class);
                 intent.putExtra("username", username);
                 startActivity(intent);
 

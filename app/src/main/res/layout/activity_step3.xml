@@ -4,17 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main2Activity">
-
-    <Button
-        android:id="@+id/button_Confirm2B"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Confirm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_PhotoB" />
+    tools:context=".Step3Activity">
 
     <ImageView
         android:id="@+id/imageView6B"
@@ -42,7 +32,7 @@
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toEndOf="@+id/imageView10"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/a3" />
+        app:srcCompat="@drawable/b3" />
 
     <TextView
         android:id="@+id/textView2B"
@@ -68,34 +58,13 @@
         android:id="@+id/textView_InstructionB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="Take a photo of your face"
+        android:layout_marginTop="16dp"
+        android:text="Your account has been verified successfully!"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3B" />
-
-    <Button
-        android:id="@+id/button_TakePhotoB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Take photo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_InstructionB" />
-
-    <Button
-        android:id="@+id/button_GalleryB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="From Gallery"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_TakePhotoB" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/textView_step3B"
@@ -117,17 +86,6 @@
         app:srcCompat="@drawable/arrow_right" />
 
     <ImageView
-        android:id="@+id/imageView_PhotoB"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintDimensionRatio="h,16:9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_GalleryB"
-        app:srcCompat="@android:color/background_dark" />
-
-    <ImageView
         android:id="@+id/imageView10"
         android:layout_width="59dp"
         android:layout_height="15dp"
@@ -136,4 +94,13 @@
         app:layout_constraintTop_toTopOf="@+id/imageView7B"
         app:srcCompat="@drawable/arrow_right" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3B"
+        app:srcCompat="@drawable/correct" />
 </androidx.constraintlayout.widget.ConstraintLayout>

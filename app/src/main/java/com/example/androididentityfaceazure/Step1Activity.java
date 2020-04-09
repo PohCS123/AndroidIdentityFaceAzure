@@ -4,12 +4,15 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,9 +20,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-public class Main3Activity extends AppCompatActivity {
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+
+import edmt.dev.edmtdevcognitiveface.Contract.Face;
+import edmt.dev.edmtdevcognitiveface.FaceServiceClient;
+import edmt.dev.edmtdevcognitiveface.FaceServiceRestClient;
+
+public class Step1Activity extends AppCompatActivity {
 
     ImageView imageView;
+    TextView textView_error;
 
     Button button;
     Uri imageUri;
@@ -29,16 +41,73 @@ public class Main3Activity extends AppCompatActivity {
     String []cameraPermission;
     String []storagePermission;
     boolean bool_image;
+    String errorMessage;
 
     private static final int PICK_IMAGE = 100;
     private static final int CAMERA_REQUEST_CODE = 200;
     private static final int STORAGE_REQUEST_CODE = 400;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
+    private final String API_KEY="298ac06ff3884863928b35b43e7d07a6";
+    private final String API_LINK="https://southeastasia.api.cognitive.microsoft.com/face/v1.0/";
+
+    private FaceServiceClient faceServiceClient = new FaceServiceRestClient(API_LINK, API_KEY);
+
+    class CheckPhotoTask extends AsyncTask<String,String, Integer> {
+        @Override
+        protected void onPostExecute(Integer integer) {
+            if (integer == 1){
+                textView_error.setText("");
+                imageView.setImageURI(imageUri);
+                bool_image = true;
+            } else if (integer==2||integer==3||integer==0) {
+                textView_error.setText(errorMessage);
+                bool_image = false;
+            } else {
+                textView_error.setText("unknown error");
+                bool_image = false;
+            }
+
+        }
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            try {
+                Face[] result;
+                errorMessage = "";
+
+                Bitmap mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(params[0]));
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                InputStream imageInputStream = new ByteArrayInputStream(stream.toByteArray());
+
+                result = faceServiceClient.detect(
+                        imageInputStream,
+                        true,         // returnFaceId
+                        false,        // returnFaceLandmarks
+                        null          // returnFaceAttributes:
+                );
+
+                if (result.length > 1 ) {
+                    errorMessage = "Cannot exceed more than 1 face";
+                    return 2;
+                } else if (result == null || result.length == 0) {
+                    errorMessage = "No face detected";
+                    return 3;
+                } else {
+                    return 1;
+                }
+            } catch (Exception e) {
+                errorMessage = "[Error]" + e;
+                return 0;
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main3);
+        setContentView(R.layout.activity_step1);
 
         bool_image = false;
 
@@ -58,6 +127,8 @@ public class Main3Activity extends AppCompatActivity {
         });
 
         btOpen = findViewById(R.id.button_TakePhoto);
+
+        textView_error = findViewById(R.id.textView_error);
 
         btOpen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +152,7 @@ public class Main3Activity extends AppCompatActivity {
                 if (bool_image == true){
                     Bundle extras = getIntent().getExtras();
 
-                    Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
+                    Intent intent = new Intent(getApplicationContext(), Step2Activity.class);
                     intent.putExtra("pic", imageUriPass.toString());
                     intent.putExtra("personName",extras.getString("username"));
                     startActivity(intent);
@@ -104,14 +175,12 @@ public class Main3Activity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             imageUri = data.getData();
             imageUriPass = imageUri;
-            imageView.setImageURI(imageUri);
-            bool_image = true;
+            new CheckPhotoTask().execute(imageUri.toString());
         }
 
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             imageUriPass = imageUri;
-            imageView.setImageURI(imageUri);
-            bool_image = true;
+            new CheckPhotoTask().execute(imageUri.toString());
         }
 
 
